@@ -1,0 +1,23 @@
+{
+  "name": "api-caller",
+  "version": "1.0.0",
+  "description": "Request Retry wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomerbal/api-caller.git"
+  },
+  "author": "Tomer Balan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomerbal/api-caller/issues"
+  },
+  "homepage": "https://github.com/tomerbal/api-caller#readme",
+  "dependencies": {
+    "request": "^2.88.0",
+    "requestretry": "^3.1.0"
+  }
+}
