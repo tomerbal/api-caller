@@ -6,34 +6,49 @@ class ApiCaller {
         this.options = {
             maxAttempts: maxAttempts,
             retryStrategy: myRetryStrategy,
-            gzip: true,
-            json: true
+            gzip: true
         };
     }
 
+    configureProxy(url){
+        requestretry.defaults({proxy: url});
+    }
+
     async callGet(url, headers) {
-        const options = this.options;
+        const options = Object.assign({}, this.options);
         options.uri = url;
         options.headers = headers;
         options.method = "GET";
+        options.json = true;
         return requestretry(options);
     }
 
     async callGetCustomMaxAttempts(url, headers, maxAttempts) {
-        const options = this.options;
+        const options = Object.assign({}, this.options);
         options.uri = url;
         options.headers = headers;
         options.method = "GET";
+        options.json = true;
         options.maxAttempts = maxAttempts;
         return requestretry(options);
     }
 
     async callPost(url, headers, body) {
-        const options = this.options;
+        const options = Object.assign({}, this.options);
         options.uri = url;
         options.headers = headers;
         options.method = "POST";
+        options.json = true;
         options.body = body;
+        return requestretry(options);
+    }
+
+    async callPostForm(url, headers, body) {
+        const options =  Object.assign({}, this.options);
+        options.uri = url;
+        options.headers = headers;
+        options.method = "POST";
+        options.form = body;
         return requestretry(options);
     }
 }
