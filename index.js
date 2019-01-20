@@ -31,6 +31,16 @@ class ApiCaller {
         return requestretry(options);
     }
 
+    async callPostCustomMaxAttempts(url, headers, maxAttempts) {
+        const options = Object.assign({}, this.options);
+        options.uri = url;
+        options.headers = headers;
+        options.method = "POST";
+        options.json = true;
+        options.maxAttempts = maxAttempts;
+        return requestretry(options);
+    }
+
     async callGetCustomMaxAttempts(url, headers, maxAttempts) {
         const options = Object.assign({}, this.options);
         options.uri = url;
