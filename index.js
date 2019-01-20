@@ -14,6 +14,14 @@ class ApiCaller {
         requestretry.defaults({proxy: url});
     }
 
+    async callGetPlain(url, headers) {
+        const options = Object.assign({}, this.options);
+        options.uri = url;
+        options.headers = headers;
+        options.method = "GET";
+        return requestretry(options);
+    }
+
     async callGet(url, headers) {
         const options = Object.assign({}, this.options);
         options.uri = url;
