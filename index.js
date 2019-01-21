@@ -31,13 +31,14 @@ class ApiCaller {
         return requestretry(options);
     }
 
-    async callPostCustomMaxAttempts(url, headers, maxAttempts) {
+    async callPostCustomMaxAttempts(url, headers, maxAttempts, body) {
         const options = Object.assign({}, this.options);
         options.uri = url;
         options.headers = headers;
         options.method = "POST";
         options.json = true;
         options.maxAttempts = maxAttempts;
+        options.body = body;
         return requestretry(options);
     }
 
@@ -72,7 +73,7 @@ class ApiCaller {
 }
 
 function myRetryStrategy(err, response, body) {
-    const status = err || response.body.error || response.statusCode !== 200;
+    const status = err || response.statusCode >= 500;
     if (status) {
         let message = "Error on calling api \n";
         if (response && response.hasOwnProperty("request") && response.request.hasOwnProperty("headers") && response.request.headers.hasOwnProperty("authorization")){
