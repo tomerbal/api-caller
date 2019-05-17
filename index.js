@@ -1,4 +1,4 @@
-const requestretry = require("requestretry");
+let requestretry = require("requestretry");
 
 class ApiCaller {
 
@@ -11,7 +11,7 @@ class ApiCaller {
     }
 
     configureProxy(url){
-        requestretry.defaults({proxy: url});
+        requestretry = requestretry.defaults({proxy: url});
     }
 
     async callGetPlain(url, headers) {
