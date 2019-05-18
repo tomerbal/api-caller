@@ -1,8 +1,7 @@
-let requestretry = require("requestretry");
-
 class ApiCaller {
 
     constructor(maxAttempts) {
+        this.requestretry = require("requestretry");
         this.options = {
             maxAttempts: maxAttempts,
             retryStrategy: myRetryStrategy,
@@ -11,7 +10,7 @@ class ApiCaller {
     }
 
     configureProxy(url){
-        requestretry = requestretry.defaults({proxy: url});
+        this.requestretry = this.requestretry.defaults({proxy: url});
     }
 
     async callGetPlain(url, headers) {
@@ -19,7 +18,7 @@ class ApiCaller {
         options.uri = url;
         options.headers = headers;
         options.method = "GET";
-        return requestretry(options);
+        return this.requestretry(options);
     }
 
     async callGet(url, headers) {
@@ -28,7 +27,7 @@ class ApiCaller {
         options.headers = headers;
         options.method = "GET";
         options.json = true;
-        return requestretry(options);
+        return this.requestretry(options);
     }
 
     async callPostCustomMaxAttempts(url, headers, maxAttempts, body) {
@@ -39,7 +38,7 @@ class ApiCaller {
         options.json = true;
         options.maxAttempts = maxAttempts;
         options.body = body;
-        return requestretry(options);
+        return this.requestretry(options);
     }
 
     async callGetCustomMaxAttempts(url, headers, maxAttempts) {
@@ -49,7 +48,7 @@ class ApiCaller {
         options.method = "GET";
         options.json = true;
         options.maxAttempts = maxAttempts;
-        return requestretry(options);
+        return this.requestretry(options);
     }
 
     async callPost(url, headers, body) {
@@ -59,7 +58,7 @@ class ApiCaller {
         options.method = "POST";
         options.json = true;
         options.body = body;
-        return requestretry(options);
+        return this.requestretry(options);
     }
 
     async callPostForm(url, headers, body) {
@@ -68,7 +67,7 @@ class ApiCaller {
         options.headers = headers;
         options.method = "POST";
         options.form = body;
-        return requestretry(options);
+        return this.requestretry(options);
     }
 }
 
