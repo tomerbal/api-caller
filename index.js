@@ -1,11 +1,12 @@
 class ApiCaller {
 
-    constructor(maxAttempts) {
+    constructor(maxAttempts, timeout = 60000) {
         this.requestretry = require("requestretry");
         this.options = {
             maxAttempts: maxAttempts,
             retryStrategy: myRetryStrategy,
-            gzip: true
+            gzip: true,
+            timeout: timeout
         };
     }
 
@@ -28,6 +29,16 @@ class ApiCaller {
         options.method = "GET";
         options.json = true;
         return this.requestretry(options);
+    }
+
+    async callGetSessionedProxy(url, headers, proxyUrl){
+        const proxiedRequest =  this.requestretry.defaults({proxy: proxyUrl});
+        const options = Object.assign({}, this.options);
+        options.uri = url;
+        options.headers = headers;
+        options.method = "GET";
+        options.json = true;
+        return proxiedRequest(options);
     }
 
     async callPostCustomMaxAttempts(url, headers, maxAttempts, body) {

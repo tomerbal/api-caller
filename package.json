@@ -1,6 +1,6 @@
 {
   "name": "api-caller",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Request Retry wrapper",
   "main": "index.js",
   "scripts": {
