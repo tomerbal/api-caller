@@ -10,7 +10,11 @@ class ApiCaller {
         };
     }
 
-    configureProxy(url){
+    configureSharedPool(sharedPool) {
+        this.requestretry = this.requestretry.defaults({pool: sharedPool});
+    }
+
+    configureProxy(url) {
         this.requestretry = this.requestretry.defaults({proxy: url});
     }
 
@@ -31,8 +35,8 @@ class ApiCaller {
         return this.requestretry(options);
     }
 
-    async callGetSessionedProxy(url, headers, proxyUrl){
-        const proxiedRequest =  this.requestretry.defaults({proxy: proxyUrl});
+    async callGetSessionedProxy(url, headers, proxyUrl) {
+        const proxiedRequest = this.requestretry.defaults({proxy: proxyUrl});
         const options = Object.assign({}, this.options);
         options.uri = url;
         options.headers = headers;
@@ -40,6 +44,18 @@ class ApiCaller {
         options.json = true;
         return proxiedRequest(options);
     }
+
+    async callPostSessionedProxy(url, headers, body, proxyUrl) {
+        const proxiedRequest = this.requestretry.defaults({proxy: proxyUrl});
+        const options = Object.assign({}, this.options);
+        options.uri = url;
+        options.headers = headers;
+        options.method = "POST";
+        options.json = true;
+        options.body = body;
+        return proxiedRequest(options);
+    }
+
 
     async callPostCustomMaxAttempts(url, headers, maxAttempts, body) {
         const options = Object.assign({}, this.options);
@@ -73,7 +89,7 @@ class ApiCaller {
     }
 
     async callPostForm(url, headers, body) {
-        const options =  Object.assign({}, this.options);
+        const options = Object.assign({}, this.options);
         options.uri = url;
         options.headers = headers;
         options.method = "POST";
@@ -86,11 +102,11 @@ function myRetryStrategy(err, response, body) {
     const status = err || response.statusCode >= 500;
     if (status) {
         let message = "Error on calling api \n";
-        if (response && response.hasOwnProperty("request") && response.request.hasOwnProperty("headers") && response.request.headers.hasOwnProperty("authorization")){
-            message = message + "Authorization: " +response.request.headers.authorization + ".\n";
+        if (response && response.hasOwnProperty("request") && response.request.hasOwnProperty("headers") && response.request.headers.hasOwnProperty("authorization")) {
+            message = message + "Authorization: " + response.request.headers.authorization + ".\n";
         }
-        if (response && response.req && response.req.res && response.req.res.request){
-            message = message +"On endpoint: " + response.req.res.request.href + ". \n";
+        if (response && response.req && response.req.res && response.req.res.request) {
+            message = message + "On endpoint: " + response.req.res.request.href + ". \n";
         }
         if (err) {
             message = message + " Err: " + err + ".\n";
