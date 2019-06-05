@@ -10,8 +10,8 @@ class ApiCaller {
         };
     }
 
-    configureSharedPool(sharedPool) {
-        this.requestretry = this.requestretry.defaults({pool: sharedPool});
+    configureHttpAgent(httpAgent) {
+        this.options.agent = httpAgent;
     }
 
     configureProxy(url) {
@@ -28,6 +28,9 @@ class ApiCaller {
 
     async callGet(url, headers) {
         const options = Object.assign({}, this.options);
+        if (this.options.hasOwnProperty("agent")){
+            options.agent = this.options.agent;
+        }
         options.uri = url;
         options.headers = headers;
         options.method = "GET";
@@ -111,10 +114,10 @@ function myRetryStrategy(err, response, body) {
         if (err) {
             message = message + " Err: " + err + ".\n";
         }
-        if (response && response.body.error) {
+        if (response && response.body && response.body.error) {
             message = message + "Response body error: " + response.body.error + ".\n";
         }
-        if (response && response.body.message) {
+        if (response && response.body && response.body.message) {
             message = message + "Response body message: " + response.body.message + ".\n";
         }
         if (response && response.statusCode !== 200) {
