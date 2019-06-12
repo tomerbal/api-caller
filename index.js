@@ -99,10 +99,20 @@ class ApiCaller {
         options.form = body;
         return this.requestretry(options);
     }
+
+    async callPut(url, headers, body){
+        const options = Object.assign({}, this.options);
+        options.uri = url;
+        options.headers = headers;
+        options.method = "PUT";
+        options.json = true;
+        options.body = body;
+        return this.requestretry(options);
+    }
 }
 
 function myRetryStrategy(err, response, body) {
-    const status = err || response.statusCode >= 500;
+    const status = err || response.statusCode >= 500 || response.statusMessage === "Forbidden";
     if (status) {
         let message = "Error on calling api \n";
         if (response && response.hasOwnProperty("request") && response.request.hasOwnProperty("headers") && response.request.headers.hasOwnProperty("authorization")) {
