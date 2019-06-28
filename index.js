@@ -140,7 +140,6 @@ function myRetryStrategy(err, response, body) {
             message = message + "Response status message: " + response.statusMessage + ".\n";
         }
         console.warn(message);
-        err.statusCode = response.statusCode;
         return true;
     }
     return status;
