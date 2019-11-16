@@ -63,5 +63,4 @@ typings/
 .next
 
 .idea/
-test.js
 test-apify.js

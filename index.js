@@ -23,8 +23,11 @@ class ApiCaller {
         this.requestretry = this.requestretry.defaults({proxy: url});
     }
 
-    async callGetPlain(url, headers) {
-        const options = Object.assign({}, this.options);
+    async callGetPlain(url, headers, additionalOptions) {
+        let options = Object.assign({}, this.options);
+        if (additionalOptions){
+            options = Object.assign(options, additionalOptions);
+        }
         options.uri = url;
         options.headers = headers;
         options.method = "GET";
@@ -46,10 +49,26 @@ class ApiCaller {
     async callGetSessionedProxy(url, headers, proxyUrl) {
         const proxiedRequest = this.requestretry.defaults({proxy: proxyUrl});
         const options = Object.assign({}, this.options);
+        if (this.options.hasOwnProperty("agent")){
+            options.agent = this.options.agent;
+        }
         options.uri = url;
         options.headers = headers;
         options.method = "GET";
         options.json = true;
+        return proxiedRequest(options);
+    }
+
+    async callGetPainSessionedProxy(url, headers, proxyUrl, additionalOptions) {
+        const proxiedRequest = this.requestretry.defaults({proxy: proxyUrl});
+        let options = Object.assign({}, this.options);
+        if (this.options.hasOwnProperty("agent")){
+            options.agent = this.options.agent;
+        }
+        options = Object.assign(options, additionalOptions);
+        options.uri = url;
+        options.headers = headers;
+        options.method = "GET";
         return proxiedRequest(options);
     }
 
