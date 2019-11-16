@@ -1,6 +1,6 @@
 class ApiCaller {
 
-    constructor(maxAttempts, timeout = 60000) {
+    constructor(maxAttempts, timeout = 60000, userRetryStrategy) {
         this.requestretry = require("requestretry");
         this.options = {
             maxAttempts: maxAttempts,
@@ -8,6 +8,12 @@ class ApiCaller {
             gzip: true,
             timeout: timeout
         };
+        if (userRetryStrategy){
+            this.options.retryStrategy = userRetryStrategy;
+        }
+        else{
+            this.options.retryStrategy = myRetryStrategy;
+        }
     }
 
     setRetryStrategy(retryStrategy){
