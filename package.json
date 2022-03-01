@@ -18,6 +18,6 @@
   "homepage": "https://github.com/tomerbal/api-caller#readme",
   "dependencies": {
     "request": "^2.88.0",
-    "requestretry": "^3.1.0"
+    "requestretry": "^7.0.0"
   }
 }
