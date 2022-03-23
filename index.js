@@ -65,7 +65,7 @@ class ApiCaller {
         return proxiedRequest(options);
     }
 
-    async callGetPainSessionedProxy(url, headers, proxyUrl, additionalOptions) {
+    async callGetPlainSessionedProxy(url, headers, proxyUrl, additionalOptions) {
         const proxiedRequest = this.requestretry.defaults({proxy: proxyUrl});
         let options = Object.assign({}, this.options);
         if (this.options.hasOwnProperty("agent")){
